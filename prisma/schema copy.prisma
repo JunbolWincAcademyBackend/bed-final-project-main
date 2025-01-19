@@ -1,0 +1,196 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "sqlite" // Specifies SQLite as the database provider
+  url      = env("DATABASE_URL") // Reads the database URL from the .env file
+  relationMode = "prisma" // Prisma enforces all relationships instead of relying on SQLite's limited foreign key support
+}
+
+//adding models: All model names are in singular and start with Uppercase
+
+/*  The Booking model represents a reservation made by a user for a property. Each booking includes information about the user, the property, the dates of the stay,the number of guests, the total price, and the current booking status. */
+
+model Booking {
+  id             String   @id @default(uuid()) // Primary key with a default UUID value
+  userId         String   // Foreign key referencing the User model
+  propertyId     String   // Foreign key referencing the Property model
+  checkinDate    DateTime // Check-in date for the booking
+  checkoutDate   DateTime // Check-out date for the booking
+  numberOfGuests Int      // Total number of guests for the booking
+  totalPrice     Float    // Total price for the booking (in a floating-point format)
+  bookingStatus  String   // Current status of the booking (e.g., confirmed, pending, cancelled)
+
+  // Relationships
+  user     User     @relation(fields: [userId], references: [id]) // Links this booking to a specific user.
+/* 
+ Links this booking to a specific user.
+  The "user" field allows you to access the related User data for a specific booking in your queries.
+  The "User" model tells Prisma that the "user" field in the Booking model represents a relationship to the User model,
+  establishing a connection between the "userId" field in Booking and the "id" field in the User model.
+
+  How it works:
+  Prisma automatically manages this relationship. You can query this relationship in both directions:
+    1. From Booking to User: Retrieve the user who made a specific booking.
+    2. From User to Booking: Retrieve all bookings made by a specific user.
+
+  Example Query inside the getBookins.js in the bookings folder:
+  // Fetch a booking with its associated user details
+  const bookingWithUser = await prisma.booking.findUnique({
+    where: { id: "booking-id" }, // Replace "booking-id" with the actual booking ID
+    include: { user: true },     // Include the related user
+  });
+
+  console.log(bookingWithUser.user.name); // Access the user's name
+  */
+
+ property Property @relation(fields: [propertyId], references: [id]) 
+/* Links this booking to a specific property. The "property" field allows you to access the related Property data for a specific booking in your queries. The "Property" model tells Prisma that the "property" field in the Booking model represents a relationship to the Property model,establishing a connection between the "propertyId" field in Booking and the "id" field in the Property model. 
+
+  /* 
+  Links this booking to a specific property.
+  The "property" field allows you to access the related Property data for a specific booking in your queries.
+  The "Property" model tells Prisma that the "property" field in the Booking model represents a relationship to the Property model,
+  establishing a connection between the "propertyId" field in Booking and the "id" field in the Property model.
+
+  How it works:
+  Prisma automatically manages this relationship. You can query this relationship in both directions:
+    1. From Booking to Property: Retrieve the property that was booked.
+    2. From Property to Booking: Retrieve all bookings for a specific property.
+
+  Example Query:
+  // Fetch a booking with its associated property details
+  const bookingWithProperty = await prisma.booking.findUnique({
+    where: { id: "booking-id" }, // Replace "booking-id" with the actual booking ID
+    include: { property: true }, // Include the related property
+  });
+
+  console.log(bookingWithProperty.property.title); // Access the property's title
+  */
+
+}
+
+
+/* The User model represents individuals who can create bookings and write reviews in the system. Users have personal details such as username, name, and email, as well as a one-to-many relationship with Bookings and Reviews. This model is linked to other models to manage the relationships between users, their bookings, and their reviews. */
+
+model User {
+  id            String     @id @default(uuid()) // Primary key with a default UUID value
+  username      String     @unique              // A unique username for the user
+  password      String                        // User's password for authentication
+  name          String                        // User's full name
+  email         String     @unique              // A unique email for the user
+  phoneNumber   String                        // User's phone number
+  profilePicture String?                      // Optional field for the user's profile picture URL
+
+  // Relationships
+  bookings      Booking[]                     // One-to-many relationship: A user can have multiple bookings
+  /* 
+  The "bookings" field allows you to retrieve all the bookings associated with a specific user in your queries.
+  Each booking refers to a property and the details of the reservation made by the user.
+
+  How it works:
+  Prisma automatically manages this one-to-many relationship. You can query this relationship in both directions:
+    1. From User to Booking: Retrieve all bookings made by a specific user.
+    2. From Booking to User: Retrieve the user who made a specific booking.
+
+  Example Query:
+  // Fetch a user with all their bookings
+  const userWithBookings = await prisma.user.findUnique({
+    where: { id: "user-id" }, // Replace "user-id" with the actual user ID
+    include: { bookings: true }, // Include all bookings for this user
+  });
+
+  console.log(userWithBookings.bookings); // Access the array of bookings
+  */
+
+  reviews       Review[]                      // One-to-many relationship: A user can write multiple reviews
+  /* 
+  The "reviews" field allows you to retrieve all reviews written by a specific user in your queries.
+  Each review contains details about the property being reviewed and the user's feedback.
+
+  How it works:
+  Prisma automatically manages this one-to-many relationship. You can query this relationship in both directions:
+    1. From User to Review: Retrieve all reviews written by a specific user.
+    2. From Review to User: Retrieve the user who wrote a specific review.
+
+  Example Query:
+  // Fetch a user with all their reviews
+  const userWithReviews = await prisma.user.findUnique({
+    where: { id: "user-id" }, // Replace "user-id" with the actual user ID
+    include: { reviews: true }, // Include all reviews written by this user
+  });
+
+  console.log(userWithReviews.reviews); // Access the array of reviews
+  */
+}
+
+
+
+
+/* The Property model represents a listing that users can book. Each property has details like location, price, and capacity, and it can offer various amenities. It is connected to the Amenity model through a many-to-many relationship. */
+
+model Property {
+  id             String      @id @default(uuid()) // Primary key with a default UUID value
+  title          String      // The title of the property (e.g., "Cozy Mountain Retreat")
+  description    String      // A description of the property
+  location       String      // The location of the property (e.g., "Rocky Mountains, Colorado")
+  pricePerNight  Float       // The price per night (in a floating-point format)
+  bedroomCount   Int         // The number of bedrooms in the property
+  bathRoomCount  Int         // The number of bathrooms in the property
+  maxGuestCount  Int         // The maximum number of guests allowed
+  rating         Float       // The overall rating of the property (e.g., 4.5 out of 5)
+  hostId         String      // Foreign key referencing the Host model
+
+  // Relationships
+  amenities      Amenity[]   @relation("PropertyAmenities")
+/*  Many-to-many relationship linking this property to its amenities. This relationship is bidirectional, meaning:
+     1. You can retrieve all amenities available for a specific property.
+     2. You can retrieve all properties that offer a specific amenity.
+  
+ Example Query:
+  const propertyWithAmenities = await prisma.property.findUnique({
+   where: { id: "property-id" },
+     include: { amenities: true },
+   });
+  
+   Result: This will return the property details along with an array of amenities. */
+}
+
+/* The Amenity model represents features that a property can offer, such as Wifi, Gym, or Pool. This model is connected to the Property model through a many-to-many relationship,allowing each property to have multiple amenities and each amenity to belong to multiple properties. */
+model Amenity {
+  id         String     @id @default(uuid()) // Primary key with a default UUID value
+  name       String     // The name of the amenity (e.g., Wifi, Pool, Gym)
+
+  // Relationships
+  properties Property[] @relation("PropertyAmenities")
+  // Many-to-many relationship linking this amenity to properties.This means an amenity can belong to multiple properties, and a property can have multiple amenities.
+/*   
+   How it works:
+   Prisma automatically creates an implicit join table to manage this relationship. I can query this relationship in both directions:
+     1. From Amenity to Property: Retrieve all properties offering a specific amenity.
+     2. From Property to Amenity: Retrieve all amenities offered by a specific property. 
+
+      
+ Example Query:
+ const amenityWithProperties = await prisma.amenity.findUnique({
+  where: { id: "amenity-id" }, // Replace "amenity-id" with the actual amenity ID
+  include: { properties: true },
+});
+
+console.log(amenityWithProperties.properties); 
+// Output: An array of properties that offer the specific amenity (e.g., Wifi)
+
+ */
+}
+
+
+
+
+
+
