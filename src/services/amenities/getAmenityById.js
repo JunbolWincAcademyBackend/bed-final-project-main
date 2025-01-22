@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 /**
  * Fetches a specific amenity by its ID.
- * @param {string} id - The ID of the amenity to fetch.
+ * param {string} id - The ID of the amenity to fetch.
  */
 const getAmenityById = async (id) => {
   try {

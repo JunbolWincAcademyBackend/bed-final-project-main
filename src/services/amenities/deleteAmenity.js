@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 /**
  * Deletes an amenity by its ID.
- * @param {string} id - The ID of the amenity to delete.
+ * param {string} id - The ID of the amenity to delete.
  */
 const deleteAmenityById = async (id) => {
   try {

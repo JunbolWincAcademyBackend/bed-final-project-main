@@ -3,9 +3,15 @@ import axios from 'axios'; // Import axios for making HTTP requests
 
 const router = Router();
 
-// POST route for login using Auth0
+// **GET route for login documentation or information**
+router.get('/', (req, res) => {
+  res.status(200).json({
+    message: 'Welcome to the login route! To log in, send a POST request with "username" and "password" in the body.',
+  });
+});
+
+// **POST route for login using Auth0**
 router.post('/', async (req, res) => {
-  // Extract username and password from the request body
   const { username, password } = req.body;
 
   console.log('Attempting login for user:', username); // Debugging log
@@ -13,12 +19,11 @@ router.post('/', async (req, res) => {
     return res.status(400).json({ message: 'Username and password are required!' });
   }
 
-// Auth0 credentials and domain (fetched dynamically from .env)
-const clientId = process.env.AUTH0_CLIENT_ID;
-const clientSecret = process.env.AUTH0_CLIENT_SECRET;
-const authDomain = process.env.AUTH0_DOMAIN;
-const audience = process.env.AUTH0_AUDIENCE;
-
+  // Auth0 credentials and domain (fetched dynamically from .env)
+  const clientId = process.env.AUTH0_CLIENT_ID;
+  const clientSecret = process.env.AUTH0_CLIENT_SECRET;
+  const authDomain = process.env.AUTH0_DOMAIN;
+  const audience = process.env.AUTH0_AUDIENCE;
 
   try {
     // Send a POST request to Auth0's token endpoint to exchange credentials for a token

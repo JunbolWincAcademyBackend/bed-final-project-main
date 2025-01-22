@@ -4,8 +4,8 @@ const prisma = new PrismaClient();
 
 /**
  * Updates an amenity by its ID.
- * @param {string} id - The ID of the amenity to update.
- * @param {object} updatedFields - The fields to update (e.g., { name: "New Amenity Name" }).
+ * param {string} id - The ID of the amenity to update.
+ * param {object} updatedFields - The fields to update (e.g., { name: "New Amenity Name" }).
  */
 const updateAmenityById = async (id, updatedFields) => {
   try {

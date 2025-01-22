@@ -11,7 +11,7 @@ const prisma = new PrismaClient();
  * - The returned data includes all fields from the User model in the database.
  * - Efficient database querying avoids manual file imports or in-memory operations.
  *
- * @throws Error if fetching users from the database fails.
+ * throws Error if fetching users from the database fails.
  */
 const getUsers = async () => {
   try {

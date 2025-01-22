@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'; // Import Prisma Client
+import { v4 as uuidv4 } from 'uuid'; // Import UUID for unique ID generation
 
 const prisma = new PrismaClient(); // Initialize Prisma Client
 
@@ -8,11 +9,12 @@ const createUser = async (username, name, password, email, phoneNumber, profileP
     // Create a new user using Prisma's create method
     const newUser = await prisma.user.create({
       data: {
-        username,       // The username for the new user
-        name,           // Full name of the user
-        password,       // Password for authentication (hashed in production)
-        email,          // Email address of the user
-        phoneNumber,    // Contact number
+        id: uuidv4(), // ✅ Generate a unique ID for the user
+        username, // The username for the new user
+        name, // Full name of the user
+        password, // Password for authentication (hashed in production)
+        email, // Email address of the user
+        phoneNumber, // Contact number
         profilePicture, // Optional profile picture URL
       },
     });
