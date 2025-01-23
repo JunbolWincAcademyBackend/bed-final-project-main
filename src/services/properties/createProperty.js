@@ -7,12 +7,23 @@ const prisma = new PrismaClient(); // Initialize Prisma Client
 const createProperty = async (propertyData) => {
   try {
     // Destructure the propertyData object for clarity
-    const { title, description, location, pricePerNight, bedroomCount, bathRoomCount, maxGuestCount, hostId, amenityIds } = propertyData;
+    const {
+      title,
+      description,
+      location,
+      pricePerNight,
+      bedroomCount,
+      bathRoomCount,
+      maxGuestCount,
+      hostId,
+      amenityIds,
+      rating,
+    } = propertyData;
 
     // Create a new property and associate it with the given amenities
     const newProperty = await prisma.property.create({
       data: {
-        id: uuidv4(),         // ✅ Generate a unique ID for the property
+        id: uuidv4(), // ✅ Generate a unique ID for the property
         title,
         description,
         location,
@@ -21,6 +32,7 @@ const createProperty = async (propertyData) => {
         bathRoomCount,
         maxGuestCount,
         hostId,
+        rating, // ✅ Include the rating in the property data
         amenities: {
           connect: amenityIds.map((id) => ({ id })), // Link amenities by their IDs
         },
@@ -35,4 +47,4 @@ const createProperty = async (propertyData) => {
   }
 };
 
-export default createProperty; 
+export default createProperty;

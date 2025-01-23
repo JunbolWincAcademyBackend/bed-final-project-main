@@ -2,20 +2,21 @@ import express from 'express'; // Import Express for creating routes
 import { PrismaClient } from '@prisma/client'; // Import Prisma Client for database interaction
 import authMiddleware from '../middleware/advancedAuth.js'; // Import authentication middleware
 import NotFoundError from '../errors/NotFoundError.js'; // Import custom error for handling "not found" scenarios
-import getProperties from '../services/getProperties.js'; // Import the getProperties service
 
 const prisma = new PrismaClient(); // Initialize Prisma Client
 const propertiesRouter = express.Router(); // Create a router for properties
 
-// **Route to fetch all properties with optional query parameters**
+// **Route to fetch all properties**
 propertiesRouter.get('/', async (req, res, next) => {
   try {
-    // Extract query parameters from the request
-    const { location, pricePerNight, amenities } = req.query;
-//🚩the findMany method was delegated to the getProperties service. The getProperties function uses findMany to handle the database query, including optional filters for query parameters.
-
-    // Use the getProperties service to fetch properties with filters ✅
-    const properties = await getProperties({ location, pricePerNight, amenities });
+    // Fetch all properties from the database
+    const properties = await prisma.property.findMany({
+      include: {
+        amenities: true, // Include associated amenities
+        reviews: true,   // Include associated reviews
+        host: true,      // Include the host who owns the property
+      },
+    });
 
     res.status(200).json(properties); // Respond with the list of properties
   } catch (error) {
@@ -141,4 +142,4 @@ propertiesRouter.delete('/:id', authMiddleware, async (req, res, next) => {
   }
 });
 
-export default propertiesRouter;
+export default propertiesRouter; // Export the router for use in the app
