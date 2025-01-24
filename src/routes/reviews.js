@@ -2,20 +2,19 @@ import express from 'express'; // Import Express for creating routes
 import { PrismaClient } from '@prisma/client'; // Import Prisma Client for database interaction
 import authMiddleware from '../middleware/advancedAuth.js'; // Import authentication middleware
 import NotFoundError from '../errors/NotFoundError.js'; // Import custom error for handling "not found" scenarios
+import getReviews from '../services/getReviews.js'; // Import the getReviews service
 
 const prisma = new PrismaClient(); // Initialize Prisma Client
 const reviewsRouter = express.Router(); // Create a router for reviews
 
-// **Route to fetch all reviews**
+// **Route to fetch all reviews with optional query parameters**
 reviewsRouter.get('/', async (req, res, next) => {
   try {
-    // Fetch all reviews from the database
-    const reviews = await prisma.review.findMany({
-      include: {
-        user: true,       // Include the user who wrote the review
-        property: true,   // Include the property being reviewed
-      },
-    });
+    // Extract query parameters from the request
+    const { userId, propertyId, rating } = req.query; // Query parameters to filter reviews
+
+    // Call the getReviews service with the extracted query parameters ✅
+    const reviews = await getReviews({ userId, propertyId, rating });
 
     res.status(200).json(reviews); // Respond with the list of reviews
   } catch (error) {
@@ -29,7 +28,7 @@ reviewsRouter.get('/:id', async (req, res, next) => {
   try {
     const { id } = req.params; // Extract review ID from the request parameters
 
-    // Fetch the review by ID, including related data
+    // Fetch the review by ID
     const review = await prisma.review.findUnique({
       where: { id },
       include: {
@@ -57,12 +56,7 @@ reviewsRouter.post('/', authMiddleware, async (req, res, next) => {
 
     // Create the new review
     const newReview = await prisma.review.create({
-      data: {
-        userId,
-        propertyId,
-        rating,
-        comment,
-      },
+      data: { userId, propertyId, rating, comment },
     });
 
     res.status(201).json({
@@ -79,12 +73,12 @@ reviewsRouter.post('/', authMiddleware, async (req, res, next) => {
 reviewsRouter.put('/:id', authMiddleware, async (req, res, next) => {
   try {
     const { id } = req.params; // Extract review ID from the request parameters
-    const { rating, comment } = req.body; // Extract fields to update
+    const updatedFields = req.body; // Extract fields to update
 
     // Update the review
     const updatedReview = await prisma.review.update({
       where: { id },
-      data: { rating, comment },
+      data: updatedFields,
     });
 
     res.status(200).json({
@@ -106,7 +100,7 @@ reviewsRouter.delete('/:id', authMiddleware, async (req, res, next) => {
   try {
     const { id } = req.params; // Extract review ID from the request parameters
 
-    // Delete the review from the database
+    // Delete the review
     const deletedReview = await prisma.review.delete({
       where: { id },
     });
@@ -125,4 +119,4 @@ reviewsRouter.delete('/:id', authMiddleware, async (req, res, next) => {
   }
 });
 
-export default reviewsRouter; // Export the router for use in the app
+export default reviewsRouter;

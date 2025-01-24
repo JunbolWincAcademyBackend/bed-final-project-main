@@ -2,17 +2,28 @@ import { PrismaClient } from '@prisma/client'; // Import Prisma Client
 
 const prisma = new PrismaClient(); // Initialize Prisma Client
 
-// Function to get all hosts
-const getHosts = async () => {
+// Function to fetch all hosts from the database with optional filters
+const getHosts = async (filters) => {
   try {
-    // Fetch all hosts from the database
-    const hosts = await prisma.host.findMany(); // Retrieves all hosts as an array
-    console.log('Fetched all hosts:', hosts); // Debug log
-    return hosts; // Return the fetched hosts
+    // Destructure filters for clarity
+    const { name, email } = filters;
+
+    // Fetch hosts with applied conditional filters ✅
+    const hosts = await prisma.host.findMany({
+      where: {
+        // ✅ Applied Conditional Filters
+        ...(name && { name: { contains: name, mode: 'insensitive' } }), // Filter by name (case-insensitive search)
+        ...(email && { email: { contains: email, mode: 'insensitive' } }), // Filter by email (case-insensitive search)
+      },
+    });
+
+    // Return the list of filtered hosts
+    return hosts;
   } catch (error) {
-    console.error('Error fetching hosts:', error.message); // Log any errors
-    throw new Error('Failed to fetch hosts.'); // Throw an error for upstream handling
+    console.error('Error fetching hosts:', error.message);
+    throw new Error('Failed to fetch hosts.');
   }
 };
 
 export default getHosts;
+

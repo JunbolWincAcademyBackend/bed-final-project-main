@@ -1,8 +1,45 @@
-import { PrismaClient } from '@prisma/client'; // Import Prisma Client for database operations
+import { PrismaClient } from '@prisma/client'; // Import Prisma Client
 
 const prisma = new PrismaClient(); // Initialize Prisma Client
 
-/**
+// Function to fetch all bookings from the database with optional filters
+const getBookings = async (filters) => {
+  try {
+    // Destructure filters for clarity
+    const { userId, propertyId, bookingStatus } = filters;
+
+    // Fetch bookings with applied conditional filters ✅
+    const bookings = await prisma.booking.findMany({
+      where: {
+        // ✅ Applied Conditional Filters
+        ...(userId && { userId }), // Filter by user ID
+        ...(propertyId && { propertyId }), // Filter by property ID
+        ...(bookingStatus && { bookingStatus }), // Filter by booking status
+      },
+      include: {
+        user: true,       // Include the user who made the booking
+        property: true,   // Include the associated property
+      },
+    });
+
+    // Return the list of filtered bookings
+    return bookings;
+  } catch (error) {
+    console.error('Error fetching bookings:', error.message);
+    throw new Error('Failed to fetch bookings.');
+  }
+};
+
+export default getBookings;
+
+
+
+
+
+/* import { PrismaClient } from '@prisma/client'; // Import Prisma Client for database operations
+
+const prisma = new PrismaClient(); // Initialize Prisma Client
+
  * Service to retrieve bookings with optional filters for userId and propertyId.
  *
  * How This Works:
@@ -10,7 +47,7 @@ const prisma = new PrismaClient(); // Initialize Prisma Client
  * - If no filters are provided, the function fetches all bookings.
  * - The `where` clause dynamically includes filters based on the provided arguments.
  * - Prisma queries the database directly, making filtering efficient and avoiding in-memory filtering.
- */
+
 const getBookings = async (userId, propertyId) => {
   try {
     // Log input filters for debugging
@@ -42,3 +79,4 @@ const getBookings = async (userId, propertyId) => {
 };
 
 export default getBookings;
+ */
