@@ -2,7 +2,7 @@ import express from 'express'; // Import Express for creating routes
 import { PrismaClient } from '@prisma/client'; // Import Prisma Client for database interaction
 import authMiddleware from '../middleware/advancedAuth.js'; // Import authentication middleware
 import NotFoundError from '../errors/NotFoundError.js'; // Import custom error for handling "not found" scenarios
-import getBookings from '../services/getBookings.js'; // Import the getBookings service
+import getBookings from '../services/bookings/getBookings.js'; // Import the getBookings service
 
 const prisma = new PrismaClient(); // Initialize Prisma Client
 const bookingsRouter = express.Router(); // Create a router for bookings
@@ -11,7 +11,7 @@ const bookingsRouter = express.Router(); // Create a router for bookings
 bookingsRouter.get('/', async (req, res, next) => {
   try {
     // Extract query parameters from the request
-    const { userId, propertyId, bookingStatus } = req.query; // Query parameters to filter bookings
+    const { userId, propertyId, bookingStatus } = req.query; // Query parameters to filter bookings. I added more queries than the required by the assignment, to make it more complete.
 
     // Call the getBookings service with the extracted query parameters ✅
     const bookings = await getBookings({ userId, propertyId, bookingStatus });

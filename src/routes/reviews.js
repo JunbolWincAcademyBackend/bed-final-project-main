@@ -2,7 +2,7 @@ import express from 'express'; // Import Express for creating routes
 import { PrismaClient } from '@prisma/client'; // Import Prisma Client for database interaction
 import authMiddleware from '../middleware/advancedAuth.js'; // Import authentication middleware
 import NotFoundError from '../errors/NotFoundError.js'; // Import custom error for handling "not found" scenarios
-import getReviews from '../services/getReviews.js'; // Import the getReviews service
+import getReviews from '../services/reviews/getReviews.js'; // Import the getReviews service
 
 const prisma = new PrismaClient(); // Initialize Prisma Client
 const reviewsRouter = express.Router(); // Create a router for reviews

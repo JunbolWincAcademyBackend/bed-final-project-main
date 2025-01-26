@@ -3961,7 +3961,10 @@
           "    }",
           "    ",
           "    var responseBody = JSON.parse(response.text());",
-          "    pm.environment.set('bearerToken', responseBody.token); // Assuming the token is in a 'token' property",
+      
+          "console.log('Login response data:', responseBody);",
+    
+          "    pm.environment.set('bearerToken', responseBody.token); // the 'token' will be created in the background by Newman. Assuming the token is in a 'token' property" ,
           "});",
           ""
         ]

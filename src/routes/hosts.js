@@ -2,7 +2,7 @@ import express from 'express'; // Import Express for creating routes
 import { PrismaClient } from '@prisma/client'; // Import Prisma Client for database interaction
 import authMiddleware from '../middleware/advancedAuth.js'; // Import authentication middleware
 import NotFoundError from '../errors/NotFoundError.js'; // Import custom error for handling "not found" scenarios
-import getHosts from '../services/getHosts.js'; // Import the getHosts service
+import getHosts from '../services/hosts/getHosts.js'; // Import the getHosts service
 
 const prisma = new PrismaClient(); // Initialize Prisma Client
 const hostsRouter = express.Router(); // Create a router for hosts
@@ -12,9 +12,10 @@ hostsRouter.get('/', async (req, res, next) => {
   try {
     // Extract query parameters from the request
     const { name, email } = req.query; // Query parameters to filter hosts by name or email
-
+    console.log('Query Parameters in Route:', { name, email }); // ✅ log to check name and email transit
     // Call the getHosts service with the extracted query parameters ✅
     const hosts = await getHosts({ name, email });
+    console.log(hosts); // ✅ log to check name and email transit
 
     res.status(200).json(hosts); // Respond with the list of hosts
   } catch (error) {

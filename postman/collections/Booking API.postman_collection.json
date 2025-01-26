@@ -1,0 +1,1096 @@
+{
+	"info": {
+		"_postman_id": "fe76776f-9bfe-45b4-aa65-ce66855f75d9",
+		"name": "Booking API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31424146"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Queries",
+					"item": [
+						{
+							"name": "GET user by username",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users?username=jdoe",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									],
+									"query": [
+										{
+											"key": "username",
+											"value": "jdoe"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET user by email",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users?email=johndoe@example.com",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "johndoe@example.com"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GET users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET user by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/a1234567-89ab-cdef-0123-456789abcdef",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"a1234567-89ab-cdef-0123-456789abcdef"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"f6789012-34kl-mnop-3456-789abcdef012\", // ✅ Generated ID\r\n  \"username\": \"tjohnson\",\r\n  \"password\": \"securepass123\",\r\n  \"name\": \"Taylor Johnson\",\r\n  \"email\": \"taylorjohnson@example.com\",\r\n  \"phoneNumber\": \"555-789-1234\",\r\n  \"profilePicture\": \"https://example.com/images/tjohnson-profile-pic.jpg\",\r\n  \"bookings\": [],\r\n  \"reviews\": []\r\n}\r\n\r\n\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE by user id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/e5678901-23f0-1234-5678-9abcdef01234",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"e5678901-23f0-1234-5678-9abcdef01234"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user's phone number by user id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"phoneNumber\": \"123-456-2222\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/a1234567-89ab-cdef-0123-456789abcdef",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"a1234567-89ab-cdef-0123-456789abcdef"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Hosts",
+			"item": [
+				{
+					"name": "Queries",
+					"item": [
+						{
+							"name": "GET host by name",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/hosts?name=Linda+Smith",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"hosts"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "Linda+Smith"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GET hosts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/hosts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"hosts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET host by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/hosts/f1234567-89ab-cdef-0123-456789abcdef",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"hosts",
+								"f1234567-89ab-cdef-0123-456789abcdef"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new host",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"emilyClark\",\r\n  \"password\": \"emilySecure456\",\r\n  \"name\": \"Emily Clark\",\r\n  \"email\": \"emilyclark@email.com\",\r\n  \"phoneNumber\": \"+16234567890\",\r\n  \"profilePicture\": \"https://example.com/images/emilyclark.jpg\",\r\n  \"aboutMe\": \"As an artist and designer, I’ve created a home that’s both inspiring and welcoming. Come and enjoy a unique stay!\"\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/hosts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"hosts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update phone number of host by host id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n       \"phoneNumber\": \"+11234567892\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/hosts/f1234567-89ab-cdef-0123-456789abcdef",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"hosts",
+								"f1234567-89ab-cdef-0123-456789abcdef"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete host by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Connection-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/hosts/305ac518-2dd5-42d2-9844-3ec5ec3bd27c",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"hosts",
+								"305ac518-2dd5-42d2-9844-3ec5ec3bd27c"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bookings",
+			"item": [
+				{
+					"name": "Queries",
+					"item": [
+						{
+							"name": "GET booking by user id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/bookings?userId=a1234567-89ab-cdef-0123-456789abcdef",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"bookings"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "a1234567-89ab-cdef-0123-456789abcdef"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GET bookings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/bookings",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bookings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET booking by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/bookings/f0123456-78ab-cdef-0123-456789abcdef",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bookings",
+								"f0123456-78ab-cdef-0123-456789abcdef"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new booking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userId\": \"b2345678-90cd-ef01-2345-6789abcdef01\", // Anna Simpson's ID\r\n  \"propertyId\": \"j2345678-90f1-2345-6789-abcdef012345\", // Valid property ID (Beachfront Villa)\r\n  \"checkinDate\": \"2024-07-10T14:00:00.000Z\", // Check-in date\r\n  \"checkoutDate\": \"2024-07-15T10:00:00.000Z\", // Check-out date\r\n  \"numberOfGuests\": 2, // Number of guests\r\n  \"totalPrice\": 250.75, // Total price for the stay\r\n  \"bookingStatus\": \"confirmed\" // Status of the booking\r\n}\r\n\r\n\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/bookings",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bookings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update booiking's status  by booking id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bookingStatus\": \"canceled\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/bookings/f0123456-78ab-cdef-0123-456789abcdef",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bookings",
+								"f0123456-78ab-cdef-0123-456789abcdef"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE by booking id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/bookings/2041f603-01fb-4953-9963-9294bcadc6df",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bookings",
+								"2041f603-01fb-4953-9963-9294bcadc6df"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Properties",
+			"item": [
+				{
+					"name": "Queries",
+					"item": [
+						{
+							"name": "Query",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/properties?location=Malibu, California&pricePerNight=310.25&amenities=Wifi\n",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"properties"
+									],
+									"query": [
+										{
+											"key": "location",
+											"value": "Malibu, California"
+										},
+										{
+											"key": "pricePerNight",
+											"value": "310.25"
+										},
+										{
+											"key": "amenities",
+											"value": "Wifi\n"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GET properties",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/properties",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"properties"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET property by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/properties/g9012345-67ef-0123-4567-89abcdef0123",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"properties",
+								"g9012345-67ef-0123-4567-89abcdef0123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new property",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Modern Beach Condo\",\r\n  \"description\": \"A luxurious condo by the beach with stunning ocean views.\",\r\n  \"location\": \"Miami Beach, Florida\",\r\n  \"pricePerNight\": 200,\r\n  \"bedroomCount\": 2,\r\n  \"bathRoomCount\": 2,\r\n  \"maxGuestCount\": 4,\r\n  \"rating\": 5,\r\n  \"hostId\": \"c4567890-12de-f012-3456-789abcdef012\", \r\n  \"amenityIds\": [\r\n    \"l4567890-12gh-ijkl-1234-56789abcdef0\",\r\n    \"n6789012-34kl-mnop-3456-789abcdef012\",\r\n    \"t2345678-90qr-stuv-90bc-def012345678\"\r\n  ]\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/properties",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"properties"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update property maxGuestCount by property id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n     \"maxGuestCount\": 7\r\n}\r\n\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/properties/g9012345-67ef-0123-4567-89abcdef0123",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"properties",
+								"g9012345-67ef-0123-4567-89abcdef0123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update property add wifi by property id Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"amenityIds\": [\r\n    \"n6789012-34kl-mnop-3456-789abcdef012\",\r\n    \"p8901234-56mn-opqr-5678-9abcdef01234\",\r\n    \"t2345678-90qr-stuv-90bc-def012345678\",\r\n    \"l4567890-12gh-ijkl-1234-56789abcdef0\"\r\n  ]\r\n}\r\n\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/properties/j2345678-90f1-2345-6789-abcdef012345",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"properties",
+								"j2345678-90f1-2345-6789-abcdef012345"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE property by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/properties/90b4af60-8387-4316-8178-3f581831250f",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"properties",
+								"90b4af60-8387-4316-8178-3f581831250f"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Amenities",
+			"item": [
+				{
+					"name": "GET amenities",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/amenities",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"amenities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET amenitiy by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/amenities/t2345678-90qr-stuv-90bc-def012345678",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"amenities",
+								"t2345678-90qr-stuv-90bc-def012345678"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new amenity",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Hot Tub\"\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/amenities",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"amenities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update amenity name by amenity id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n    \"name\": \"Hot Tub Deluxe\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/amenities/c0fd1c3f-0cb4-4644-84e4-486abebbbe5b",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"amenities",
+								"c0fd1c3f-0cb4-4644-84e4-486abebbbe5b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE amenity by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/amenities/c0fd1c3f-0cb4-4644-84e4-486abebbbe5b",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"amenities",
+								"c0fd1c3f-0cb4-4644-84e4-486abebbbe5b"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reviews",
+			"item": [
+				{
+					"name": "GET reviews",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/reviews",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reviews"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET review by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/reviews/g7890123-45cd-ef01-2345-6789abcdef01",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reviews",
+								"g7890123-45cd-ef01-2345-6789abcdef01"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new review",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userId\": \"c3456789-01de-f012-3456-789abcdef012\", // Robert James's ID\r\n  \"propertyId\": \"j2345678-90f1-2345-6789-abcdef012345\", // Beachfront Villa\r\n  \"rating\": 5, // 5-star rating\r\n  \"comment\": \"An amazing experience! The views were breathtaking, and the host was very accommodating.\"\r\n}\r\n\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/reviews",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reviews"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update review name by review id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n       \"rating\": 2\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/reviews/g7890123-45cd-ef01-2345-6789abcdef01",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reviews",
+								"g7890123-45cd-ef01-2345-6789abcdef01"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "GET login",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST login to request token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the response body\r",
+									"var jsonResponse = pm.response.json();\r",
+									"\r",
+									"// Check if the token exists\r",
+									"if (jsonResponse.token) {\r",
+									"    // Store the token in the environment variable 'bearerToken'\r",
+									"    pm.environment.set(\"bearerToken\", jsonResponse.token);\r",
+									"    console.log(\"Token stored successfully:\", jsonResponse.token);\r",
+									"} else {\r",
+									"    console.error(\"Token not found in response!\");\r",
+									"}\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik81azEyWXRGSVhhQV8yblVERlZiOSJ9.eyJpc3MiOiJodHRwczovL2Rldi03dHhqcjRoN2Y2OHJsaXZsLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NzY2MTNhOWMyNGE0MDQ5MTRkNTFmM2MiLCJhdWQiOiJodHRwczovL2Jvb2tpbmctYXBpIiwiaWF0IjoxNzM3NjY3MTUwLCJleHAiOjE3Mzc3NTM1NTAsImd0eSI6InBhc3N3b3JkIiwiYXpwIjoienZQVE9sa0JRTDNlbm5xc1VIenJqbEF4T3RHYllhVHIiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6Ym9va2luZyIsIndyaXRlOmJvb2tpbmciXX0.N0sDQpE_kApVTdu5o3F_QG0mcI95K9B3nuVQi87MUSAqaNoj2k9NerzXELd5gDHTXLhAkLqN8rHWdkGW8odzY2otvLpiGuHNwePMmvN1FnjTQRPEA3zcYjBPv5JVxfJQpNOi6HRhSg7aXcmcXv5Fo3tu5yzP1xGX3AQr9fAz1UhNl4kZhuCl8a77oy8f-nMS2JjuWcfEdeXRbs8DQY3GDMvqfR5rhaRprxGfun-tNq_T-G-NvCJwgF_ti-NfbZCS86crKQVjedjfgS5Z2IZBcYH7g5_l4JFeX1tqzQ7u3JSMVPfo4f8bHOqEc9p6kpEqpxVNn3wBU3OsU4m_Jg0vxg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"junierba@gmail.com\",\r\n  \"password\": \"JunbolaNewlog46!\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -17,6 +17,16 @@ const { reviews } = reviewsData;
 const prisma = new PrismaClient({ log: ['query', 'info', 'warn', 'error'] });
 
 async function main() {
+  // Cleanup logic 🚿: Clear the database before seeding
+  console.log('Cleaning up database...');
+  await prisma.booking.deleteMany();
+  await prisma.review.deleteMany();
+  await prisma.property.deleteMany();
+  await prisma.amenity.deleteMany();
+  await prisma.host.deleteMany();
+  await prisma.user.deleteMany();
+  console.log('Database cleaned up successfully.');
+
   // Seed users
   for (const user of users) {
     await prisma.user.upsert({
@@ -113,17 +123,3 @@ main()
     await prisma.$disconnect();
     process.exit(1);
   });
-
-/* Explanation of Changes:
-1. The **seeding order** is crucial:
-   - Users, Hosts, and Amenities are seeded first, as these are independent.
-   - Properties are seeded after Amenities and Hosts, as they depend on both.
-   - Reviews are seeded next since they depend on both Users and Properties.
-   - Bookings are seeded last, as they depend on Users and Properties.
-
-2. The `bookings` seeding logic:
-   - Ensures `userId` and `propertyId` exist before connecting the `Booking` to its dependencies.
-
-3. Removed redundant logic (e.g., duplicate `users` seeding block). 
-*/
-

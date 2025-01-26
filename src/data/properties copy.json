@@ -10,12 +10,7 @@
       "bathRoomCount": 2,
       "maxGuestCount": 5,
       "hostId": "f1234567-89ab-cdef-0123-456789abcdef",
-      "rating": 5,
-      "amenities": [
-        "l4567890-12gh-ijkl-1234-56789abcdef0",
-        "q9012345-67no-pqrs-6789-abcdef012345",
-        "u3456789-01rs-tuvw-01cd-ef0123456789"
-      ]
+      "rating": 5
     },
     {
       "id": "h0123456-78f0-1234-5678-9abcdef01234",
@@ -27,12 +22,7 @@
       "bathRoomCount": 2,
       "maxGuestCount": 4,
       "hostId": "e2345678-90bc-def0-0123-456789abcdef",
-      "rating": 4,
-      "amenities": [
-        "l4567890-12gh-ijkl-1234-56789abcdef0",
-        "m5678901-23ij-klmn-2345-6789abcdef01",
-        "t2345678-90qr-stuv-90bc-def012345678"
-      ]
+      "rating": 4
     },
     {
       "id": "i1234567-89f0-1234-5678-9abcdef01234",
@@ -44,12 +34,7 @@
       "bathRoomCount": 1,
       "maxGuestCount": 3,
       "hostId": "d3456789-01cd-def0-1234-56789abcdef0",
-      "rating": 5,
-      "amenities": [
-        "o7890123-45lm-nopq-4567-89abcdef0123",
-        "n6789012-34kl-mnop-3456-789abcdef012",
-        "p8901234-56mn-opqr-5678-9abcdef01234"
-      ]
+      "rating": 5
     },
     {
       "id": "j2345678-90f1-2345-6789-abcdef012345",
@@ -61,12 +46,7 @@
       "bathRoomCount": 3,
       "maxGuestCount": 8,
       "hostId": "c4567890-12de-f012-3456-789abcdef012",
-      "rating": 5,
-      "amenities": [
-        "n6789012-34kl-mnop-3456-789abcdef012",
-        "p8901234-56mn-opqr-5678-9abcdef01234",
-        "t2345678-90qr-stuv-90bc-def012345678"
-      ]
+      "rating": 5
     },
     {
       "id": "k3456789-01f2-3456-789a-bcdef0123456",
@@ -78,12 +58,7 @@
       "bathRoomCount": 2,
       "maxGuestCount": 6,
       "hostId": "b5678901-23ef-0123-4567-89abcdef0123",
-      "rating": 4,
-      "amenities": [
-        "q9012345-67no-pqrs-6789-abcdef012345",
-        "r0123456-78op-qrst-789a-bcdef0123456",
-        "s1234567-89pq-rstu-89ab-cdef01234567"
-      ]
+      "rating": 4
     }
   ]
 }

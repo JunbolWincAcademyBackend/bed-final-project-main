@@ -7,15 +7,17 @@ const getHosts = async (filters) => {
   try {
     // Destructure filters for clarity
     const { name, email } = filters;
+    console.log('log1 Filters applied:', { name, email });
 
-    // Fetch hosts with applied conditional filters ✅
+    // Fetch hosts with applied conditional filters based on those received in query parameters ✅
     const hosts = await prisma.host.findMany({
       where: {
         // ✅ Applied Conditional Filters
-        ...(name && { name: { contains: name, mode: 'insensitive' } }), // Filter by name (case-insensitive search)
-        ...(email && { email: { contains: email, mode: 'insensitive' } }), // Filter by email (case-insensitive search)
+        ...(name && { name: { equals: name } }), // Filter by name
+        ...(email && { email: { contains: email } }), // Filter by email
       },
     });
+    console.log('log2 Filters applied:', { name, email });
 
     // Return the list of filtered hosts
     return hosts;
@@ -26,4 +28,3 @@ const getHosts = async (filters) => {
 };
 
 export default getHosts;
-

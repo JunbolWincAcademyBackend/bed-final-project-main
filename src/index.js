@@ -21,11 +21,11 @@ const port = process.env.PORT || 3000; // ✅ Use PORT from .env or default to 3
  * This middleware validates JWT tokens for protected routes.
  * Only users with a valid token can access routes like `/users`, `/bookings`, etc.
  */
-const jwtCheck = auth({
+/* const jwtCheck = auth({
   audience: process.env.AUTH0_AUDIENCE, // API audience from Auth0
   issuerBaseURL: process.env.AUTH0_DOMAIN, // Auth0 domain
   tokenSigningAlg: 'RS256', // Algorithm for token validation
-});
+}); */
 
 //---------------------------
 // Standard Middleware

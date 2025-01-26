@@ -1,11 +1,18 @@
 import { PrismaClient } from '@prisma/client'; // Import Prisma Client
 import { v4 as uuidv4 } from 'uuid'; // Import UUID for unique ID generation
+import { userSchema } from '../utils/validationSchemas.js'; // ✅ Import validation schema
 
 const prisma = new PrismaClient(); // Initialize Prisma Client
 
 // Function to create a new user in the database
 const createUser = async (username, name, password, email, phoneNumber, profilePicture) => {
   try {
+    // ✅ Validate input data using the schema
+    const { error } = userSchema.validate({ username, password, name, email, phoneNumber, profilePicture });
+    if (error) {
+      throw new Error(error.details[0].message); // ✅ Throw validation error
+    }
+
     // Create a new user using Prisma's create method
     const newUser = await prisma.user.create({
       data: {

@@ -1,11 +1,18 @@
 import { PrismaClient } from '@prisma/client'; // Import Prisma Client
 import { v4 as uuidv4 } from 'uuid'; // Import UUID for unique ID generation
+import { userSchema } from '../utils/validationSchemas.js'; // ✅ Import validation schema
 
 const prisma = new PrismaClient(); // Initialize Prisma Client
 
 // Function to create a new host
 const createHost = async (username, name, password, email, phoneNumber, profilePicture, aboutMe) => {
   try {
+    // ✅ Validate input data using the schema
+    const { error } = userSchema.validate({ username, password, name, email, phoneNumber, profilePicture });
+    if (error) {
+      throw new Error(error.details[0].message); // ✅ Throw validation error
+    }
+
     // Create a new host object in the database
     const newHost = await prisma.host.create({
       data: {
@@ -28,4 +35,4 @@ const createHost = async (username, name, password, email, phoneNumber, profileP
   }
 };
 
-export default createHost; 
+export default createHost;

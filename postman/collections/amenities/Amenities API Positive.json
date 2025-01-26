@@ -1,0 +1,172 @@
+{
+    "info": {
+        "_postman_id": "2ac98a5d-12d6-4bef-8077-94a5b56941e9",
+        "name": "Amenities API Positive",
+        "description": "RESTful API for an online booking app using Express.js and Prisma",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_uid": "17255397-2ac98a5d-12d6-4bef-8077-94a5b56941e9"
+    },
+    "item": [
+        {
+            "name": "Get all amenities",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "{{baseUrl}}/amenities",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "amenities"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Get amenity by ID",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "{{baseUrl}}/amenities/:amenityId",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "amenities",
+                        ":amenityId"
+                    ],
+                    "variable": [
+                        {
+                            "key": "amenityId",
+                            "value": "sampleId"
+                        }
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Create a new amenity",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "{{baseUrl}}/amenities",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "amenities"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\"name\": \"New Amenity\"}"
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Update amenity by ID",
+            "request": {
+                "method": "PUT",
+                "url": {
+                    "raw": "{{baseUrl}}/amenities/:amenityId",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "amenities",
+                        ":amenityId"
+                    ],
+                    "variable": [
+                        {
+                            "key": "amenityId",
+                            "value": "sampleId"
+                        }
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\"name\": \"Updated Amenity\"}"
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Delete amenity by ID",
+            "request": {
+                "method": "DELETE",
+                "url": {
+                    "raw": "{{baseUrl}}/amenities/:amenityId",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "amenities",
+                        ":amenityId"
+                    ],
+                    "variable": [
+                        {
+                            "key": "amenityId",
+                            "value": "sampleId"
+                        }
+                    ]
+                }
+            },
+            "response": []
+        }
+    ],
+    "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "id": "1ca586f7-8f3f-4609-8cea-b7fb1c98eac1",
+                "type": "text/javascript",
+                "exec": [
+                    "pm.sendRequest({",
+                    "    url: 'http://0.0.0.0:3000/login',",
+                    "    method: 'POST',",
+                    "    header: {",
+                    "        'Content-Type': 'application/json'",
+                    "    },",
+                    "    body: {",
+                    "        mode: 'raw',",
+                    "        raw: JSON.stringify({",
+                    "            username: 'jdoe',",
+                    "            password: 'password123'",
+                    "        })",
+                    "    }",
+                    "}, function (err, response) {",
+                    "    if (err) {",
+                    "        console.error('Login request failed:', err);",
+                    "        return;",
+                    "    }",
+                    "    ",
+                    "    var responseBody = JSON.parse(response.text());",
+                    "    pm.environment.set('bearerToken', responseBody.token); // the 'token' will be created in the background by Newman. Assuming the token is in a 'token' property",
+                    "});",
+                    ""
+                ]
+            }
+        },
+        {
+            "listen": "test",
+            "script": {
+                "id": "89457d56-a1ec-4a7a-a442-318fcc470c1a",
+                "type": "text/javascript",
+                "exec": [
+                    ""
+                ]
+            }
+        }
+    ],
+    "variable": [
+        {
+            "id": "3ace598b-c5ef-4a00-bc7c-1617bb431b91",
+            "key": "baseUrl",
+            "value": "http://localhost:3000",
+            "type": "string"
+        }
+    ]
+}

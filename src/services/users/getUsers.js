@@ -3,12 +3,12 @@ import { PrismaClient } from '@prisma/client'; // Import Prisma Client
 const prisma = new PrismaClient(); // Initialize Prisma Client
 
 // Function to fetch all users from the database with optional filters
-const getUsers = async (filters) => {
+const getUsers = async (filters) => {// filters is a placeholder to received the parameters given in Postman which are teh usernma and email
   try {
     // Destructure filters for clarity
     const { username, email } = filters;
 
-    // Fetch users with applied conditional filters ✅
+    // Fetch users with applied conditional filters based on those received query parameters ✅
     const users = await prisma.user.findMany({
       where: {
         // ✅ Applied Conditional Filters
@@ -16,8 +16,8 @@ const getUsers = async (filters) => {
         ...(email && { email }), // Filter by email
       },
       include: {
-        bookings: true, // Include associated bookings
-        reviews: true, // Include associated reviews
+        bookings: true, // Include associated bookings of those users
+        reviews: true, // Include associated reviews of those users
       },
     });
 

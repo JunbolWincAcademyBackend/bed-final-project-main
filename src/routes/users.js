@@ -2,7 +2,7 @@ import express from 'express'; // Import Express for creating routes
 import { PrismaClient } from '@prisma/client'; // Import Prisma Client for database interaction
 import authMiddleware from '../middleware/advancedAuth.js'; // Import authentication middleware
 import NotFoundError from '../errors/NotFoundError.js'; // Import custom error for handling "not found" scenarios
-import getUsers from '../services/getUsers.js'; // Import the getUsers service
+import getUsers from '../services/users/getUsers.js'; // Import the getUsers service
 
 const prisma = new PrismaClient(); // Initialize Prisma Client
 const usersRouter = express.Router(); // Create a router for users
@@ -11,7 +11,7 @@ const usersRouter = express.Router(); // Create a router for users
 usersRouter.get('/', async (req, res, next) => {
   try {
     // Extract query parameters from the request
-    const { username, email } = req.query; // Query parameters to filter users
+    const { username, email } = req.query; // Query parameters to filter users. When a client sends a GET request to the /users endpoint with query parameters (e.g., GET /users?username=jdoe&email=johndoe@example.com), these query parameters (username and email) are sent along with the request.
 
     // Call the getUsers service with the extracted query parameters ✅
     const users = await getUsers({ username, email });

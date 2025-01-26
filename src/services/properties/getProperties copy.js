@@ -1,3 +1,7 @@
+// UPDATED VERSION TO HANDLE QUERY PARAMETERS PASSED AS FILTERS:
+// This function is designed to accept query parameters (like location, pricePerNight, and amenities) as filters.
+// The query parameters are passed from the API endpoint (e.g., properties.js) and applied dynamically to fetch matching properties.
+
 import { PrismaClient } from '@prisma/client'; // Import Prisma Client
 
 const prisma = new PrismaClient(); // Initialize Prisma Client
@@ -8,20 +12,17 @@ const getProperties = async (filters) => {
     // Destructure filters for clarity
     const { location, pricePerNight, amenities } = filters; // Query parameters expected to be passed here ✅
 
-    // 🚩 Debug: Log incoming filters
+    // 🚩 Fix: Add validation for filters to avoid unnecessary queries
+    const validPrice = pricePerNight && !isNaN(parseFloat(pricePerNight)); // Validate price input
+    const validAmenities = amenities && amenities.trim(); // Ensure amenities string is non-empty
+
+    // 🚩 Fix: Add a log for incoming filters to debug unexpected inputs
     console.log('Filters received:', { location, pricePerNight, amenities });
-
-    // 🚩 Fix: Validate and sanitize filters
-    const validPrice = pricePerNight && !isNaN(parseFloat(pricePerNight));
-    const validAmenities = amenities && amenities.trim();
-
-    // 🚩 Debug: Log sanitized filters
-    console.log('Sanitized Filters:', { location, validPrice, validAmenities });
 
     // Fetch properties with dynamically applied filter parameters ✅
     const properties = await prisma.property.findMany({
       where: {
-        ...(location && { location }), // Apply location filter if provided
+        ...(location && { location: location }), // Apply location filter if provided
         ...(validPrice && { pricePerNight: parseFloat(pricePerNight) }), // 🚩 Ensure price filter is valid before applying
         ...(validAmenities && {
           amenities: {
@@ -36,17 +37,15 @@ const getProperties = async (filters) => {
       },
     });
 
-    // 🚩 Debug: Log fetched properties
+    // 🚩 Fix: Add a log to verify the fetched properties
     console.log('Properties fetched:', properties);
 
     // Return the list of properties matching the filters
     return properties;
   } catch (error) {
-    // 🚩 Debug: Log the entire error for better debugging
+    // 🚩 Log the full error object for better debugging
     console.error('Error fetching properties:', error);
-
-    // 🚩 Improve error message with detailed context
-    throw new Error(`Failed to fetch properties: ${error.message}`);
+    throw new Error('Failed to fetch properties.'); // Throw an error for upstream handling
   }
 };
 
