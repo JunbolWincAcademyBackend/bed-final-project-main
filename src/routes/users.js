@@ -1,121 +1,102 @@
 import express from 'express'; // Import Express for creating routes
-import { PrismaClient } from '@prisma/client'; // Import Prisma Client for database interaction
-import authMiddleware from '../middleware/advancedAuth.js'; // Import authentication middleware
+import authMiddleware from '../middleware/authMiddleware.js'; // Import authentication middleware
 import NotFoundError from '../errors/NotFoundError.js'; // Import custom error for handling "not found" scenarios
-import getUsers from '../services/users/getUsers.js'; // Import the getUsers service
 
-const prisma = new PrismaClient(); // Initialize Prisma Client
+// ✅ Import the services
+import getUsers from '../services/users/getUsers.js'; // Import getUsers service
+import getUserById from '../services/users/getUserById.js'; // Import getUserById service
+import createUser from '../services/users/createUser.js'; // Import createUser service
+import updateUserById from '../services/users/updateUserById.js'; // Import updateUserById service
+import deleteUserById from '../services/users/deleteUserById.js'; // Import deleteUserById service
+
 const usersRouter = express.Router(); // Create a router for users
 
 // **Route to fetch all users with optional query parameters**
 usersRouter.get('/', async (req, res, next) => {
   try {
-    // Extract query parameters from the request
-    const { username, email } = req.query; // Query parameters to filter users. When a client sends a GET request to the /users endpoint with query parameters (e.g., GET /users?username=jdoe&email=johndoe@example.com), these query parameters (username and email) are sent along with the request.
-
-    // Call the getUsers service with the extracted query parameters ✅
-    const users = await getUsers({ username, email });
-
-    res.status(200).json(users); // Respond with the list of users
+    const { username, email } = req.query; // Extract query parameters
+    const users = await getUsers({ username, email }); // Fetch users via service
+    res.status(200).json(users);
   } catch (error) {
-    console.error('Error fetching users:', error.message); // Log any errors
-    next(error); // Pass errors to centralized error-handling middleware
+    console.error('❌ Error fetching users:', error.message);
+    next(error);
   }
 });
 
 // **Route to fetch a user by ID**
 usersRouter.get('/:id', async (req, res, next) => {
   try {
-    const { id } = req.params; // Extract user ID from the request parameters
+    const { id } = req.params;
+    const user = await getUserById(id); // Fetch user via service
 
-    // Fetch the user by ID
-    const user = await prisma.user.findUnique({
-      where: { id },
-      include: {
-        bookings: true, // Include associated bookings
-        reviews: true,  // Include associated reviews
-      },
-    });
-
-    if (!user) {
-      throw new NotFoundError('User', id); // If user not found, throw a custom error
-    }
-
-    res.status(200).json(user); // Respond with the user details
+    if (!user) throw new NotFoundError('User', id);
+    res.status(200).json(user);
   } catch (error) {
-    console.error('Error fetching user by ID:', error.message); // Log the error
-    next(error); // Pass the error to the error-handling middleware
+    console.error('❌ Error fetching user by ID:', error.message);
+    next(error);
   }
 });
 
 // **Route to create a new user**
 usersRouter.post('/', async (req, res, next) => {
   try {
-    // Extract user details from the request body
-    const { username, password, name, email, phoneNumber, profilePicture } = req.body;
+    // 🚀 Log incoming request body
+    console.log('📥 Incoming request body:', req.body);
 
-    // Create the new user
-    const newUser = await prisma.user.create({
-      data: { username, password, name, email, phoneNumber, profilePicture },
-    });
+    const { username, password, name, email, phoneNumber, profilePicture, role } = req.body;
+
+    // ✅ Log extracted user data
+    console.log('🛠 Extracted user data:', { username, password, name, email, phoneNumber, profilePicture, role });
+
+    // ✅ Pass request data to createUser function
+    const newUser = await createUser(username, password, name, email, phoneNumber, profilePicture, role);
 
     res.status(201).json({
-      message: 'User created successfully!',
+      message: '✅ User created successfully!',
       user: newUser,
     });
   } catch (error) {
-    console.error('Error creating user:', error.message); // Log the error
-    next(error); // Pass the error to the error-handling middleware
+    console.error('❌ Error creating user:', error.message);
+    next(error);
   }
 });
 
 // **Route to update a user by ID**
 usersRouter.put('/:id', authMiddleware, async (req, res, next) => {
   try {
-    const { id } = req.params; // Extract user ID from the request parameters
-    const updatedFields = req.body; // Extract fields to update
+    const { id } = req.params;
+    const updatedFields = req.body;
 
-    // Update the user
-    const updatedUser = await prisma.user.update({
-      where: { id },
-      data: updatedFields,
-    });
+    const updatedUser = await updateUserById(id, updatedFields);
+
+    if (!updatedUser) throw new NotFoundError('User', id);
 
     res.status(200).json({
-      message: `User with ID ${id} successfully updated`,
+      message: `✅ User with ID ${id} successfully updated`,
       user: updatedUser,
     });
   } catch (error) {
-    if (error.code === 'P2025') {
-      next(new NotFoundError('User', id)); // Handle "not found" error
-    } else {
-      console.error('Error updating user:', error.message); // Log other errors
-      next(error); // Pass the error to the error-handling middleware
-    }
+    console.error('❌ Error updating user:', error.message);
+    next(error);
   }
 });
 
 // **Route to delete a user by ID**
 usersRouter.delete('/:id', authMiddleware, async (req, res, next) => {
   try {
-    const { id } = req.params; // Extract user ID from the request parameters
+    const { id } = req.params;
 
-    // Delete the user
-    const deletedUser = await prisma.user.delete({
-      where: { id },
-    });
+    const deletedUser = await deleteUserById(id);
+
+    if (!deletedUser) throw new NotFoundError('User', id);
 
     res.status(200).json({
-      message: `User with ID ${id} successfully deleted`,
-      user: deletedUser, // Include details of the deleted user
+      message: `✅ User with ID ${id} successfully deleted`,
+      user: deletedUser,
     });
   } catch (error) {
-    if (error.code === 'P2025') {
-      next(new NotFoundError('User', id)); // Handle "not found" error
-    } else {
-      console.error('Error deleting user:', error.message); // Log other errors
-      next(error); // Pass the error to the error-handling middleware
-    }
+    console.error('❌ Error deleting user:', error.message);
+    next(error);
   }
 });
 

@@ -1,117 +1,100 @@
 import express from 'express'; // Import Express for creating routes
-import { PrismaClient } from '@prisma/client'; // Import Prisma Client for database interaction
-import authMiddleware from '../middleware/advancedAuth.js'; // Import authentication middleware
+import authMiddleware from '../middleware/authMiddleware.js'; // Import authentication middleware
 import NotFoundError from '../errors/NotFoundError.js'; // Import custom error for handling "not found" scenarios
-import getAmenities from '../services/amenities/getAmenities.js'; // Import the getAmenities service
 
-const prisma = new PrismaClient(); // Initialize Prisma Client
+// Import services
+import getAmenities from '../services/amenities/getAmenities.js';
+import getAmenityById from '../services/amenities/getAmenityById.js';
+import createAmenity from '../services/amenities/createAmenity.js';
+import updateAmenityById from '../services/amenities/updateAmenityById.js';
+import deleteAmenityById from '../services/amenities/deleteAmenityById.js';
+
 const amenitiesRouter = express.Router(); // Create a router for amenities
 
-// **Route to fetch all amenities with optional query parameters**
+// **Route to fetch all amenities**
 amenitiesRouter.get('/', async (req, res, next) => {
   try {
-    // Extract query parameters from the request
     const { name } = req.query; // Query parameters to filter amenities by name
-
-    // Call the getAmenities service with the extracted query parameters ✅
     const amenities = await getAmenities({ name });
-
-    res.status(200).json(amenities); // Respond with the list of amenities
+    res.status(200).json(amenities);
   } catch (error) {
-    console.error('Error fetching amenities:', error.message); // Log any errors
-    next(error); // Pass errors to centralized error-handling middleware
+    console.error('Error fetching amenities:', error.message);
+    next(error);
   }
 });
 
 // **Route to fetch an amenity by ID**
 amenitiesRouter.get('/:id', async (req, res, next) => {
   try {
-    const { id } = req.params; // Extract amenity ID from the request parameters
-
-    // Fetch the amenity by ID
-    const amenity = await prisma.amenity.findUnique({
-      where: { id },
-    });
+    const { id } = req.params;
+    const amenity = await getAmenityById(id);
 
     if (!amenity) {
-      throw new NotFoundError('Amenity', id); // If amenity not found, throw a custom error
+      throw new NotFoundError('Amenity', id);
     }
 
-    res.status(200).json(amenity); // Respond with the amenity details
+    res.status(200).json(amenity);
   } catch (error) {
-    console.error('Error fetching amenity by ID:', error.message); // Log the error
-    next(error); // Pass the error to the error-handling middleware
+    console.error('Error fetching amenity by ID:', error.message);
+    next(error);
   }
 });
 
 // **Route to create a new amenity**
 amenitiesRouter.post('/', authMiddleware, async (req, res, next) => {
   try {
-    // Extract amenity details from the request body
     const { name } = req.body;
-
-    // Create the new amenity
-    const newAmenity = await prisma.amenity.create({
-      data: { name },
-    });
+    const newAmenity = await createAmenity(name);
 
     res.status(201).json({
       message: 'Amenity created successfully!',
       amenity: newAmenity,
     });
   } catch (error) {
-    console.error('Error creating amenity:', error.message); // Log the error
-    next(error); // Pass the error to the error-handling middleware
+    console.error('Error creating amenity:', error.message);
+    next(error);
   }
 });
 
 // **Route to update an amenity by ID**
 amenitiesRouter.put('/:id', authMiddleware, async (req, res, next) => {
   try {
-    const { id } = req.params; // Extract amenity ID from the request parameters
-    const { name } = req.body; // Extract fields to update
+    const { id } = req.params;
+    const { name } = req.body;
 
-    // Update the amenity
-    const updatedAmenity = await prisma.amenity.update({
-      where: { id },
-      data: { name },
-    });
+    const updatedAmenity = await updateAmenityById(id, { name });
+
+    if (!updatedAmenity) {
+      return res.status(404).json({ message: `Amenity with ID ${id} not found.` });
+    }
 
     res.status(200).json({
       message: `Amenity with ID ${id} successfully updated`,
       amenity: updatedAmenity,
     });
   } catch (error) {
-    if (error.code === 'P2025') {
-      next(new NotFoundError('Amenity', id)); // Handle "not found" error
-    } else {
-      console.error('Error updating amenity:', error.message); // Log other errors
-      next(error); // Pass the error to the error-handling middleware
-    }
+    console.error('Error updating amenity:', error.message);
+    next(error);
   }
 });
 
 // **Route to delete an amenity by ID**
 amenitiesRouter.delete('/:id', authMiddleware, async (req, res, next) => {
   try {
-    const { id } = req.params; // Extract amenity ID from the request parameters
+    const { id } = req.params;
+    const deletedAmenity = await deleteAmenityById(id);
 
-    // Delete the amenity
-    const deletedAmenity = await prisma.amenity.delete({
-      where: { id },
-    });
+    if (!deletedAmenity) {
+      return res.status(404).json({ message: `Amenity with ID ${id} not found.` });
+    }
 
     res.status(200).json({
       message: `Amenity with ID ${id} successfully deleted`,
-      amenity: deletedAmenity, // Include details of the deleted amenity
+      amenity: deletedAmenity,
     });
   } catch (error) {
-    if (error.code === 'P2025') {
-      next(new NotFoundError('Amenity', id)); // Handle "not found" error
-    } else {
-      console.error('Error deleting amenity:', error.message); // Log other errors
-      next(error); // Pass the error to the error-handling middleware
-    }
+    console.error('Error deleting amenity:', error.message);
+    next(error);
   }
 });
 

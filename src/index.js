@@ -1,3 +1,7 @@
+import dotenv from 'dotenv';
+dotenv.config(); // this is to load environment variables at the start of the app
+
+
 import './instrument.js'; // ✅ Import the Sentry instrumentation (must be at the top)
 
 import express from 'express'; // ✅ Use modern ESM imports

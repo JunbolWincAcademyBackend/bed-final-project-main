@@ -8,14 +8,14 @@
     "dev": "nodemon src/index.js",
     "closeServer": "node src/scripts/closeServer.js",
     "seed": "node prisma/seed.js",
-    "test-positive": "newman run \"./postman/collections/Booking API.postman_collection.json\" -e \"./postman/environments/Local.postman_environment.json\"",
+    "test-positive": "newman run \"./postman/collections/Bookings API.json\" -e \"./postman/environments/Local.postman_environment.json\"",
     "test-negative": "newman run \"./postman/collections/Bookings API Negative.json\" -e \"./postman/environments/Local.postman_environment.json\"",
     "test": "npm run test-positive && npm run test-negative"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^6.1.0",
+    "@prisma/client": "^6.3.0",
     "@sentry/node": "^7.120.2",
     "@sentry/profiling-node": "^7.120.2",
     "@sentry/tracing": "^7.120.2",
@@ -24,6 +24,7 @@
     "express": "^4.21.0",
     "express-oauth2-jwt-bearer": "^1.6.0",
     "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
     "uuid": "^10.0.0",
     "winston": "^3.15.0"
   },
@@ -31,7 +32,7 @@
     "concurrently": "^9.1.0",
     "newman": "^6.2.0",
     "nodemon": "^3.1.9",
-    "prisma": "^6.2.1"
+    "prisma": "^6.3.0"
   },
   "prisma": {
     "seed": "node ./prisma/seed.js"

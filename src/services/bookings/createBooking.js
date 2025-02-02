@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client'; // Import the Prisma Client
-import { v4 as uuidv4 } from 'uuid'; // Import UUID for unique ID generation
 
 const prisma = new PrismaClient(); // Initialize the Prisma Client
 
@@ -12,12 +11,12 @@ const prisma = new PrismaClient(); // Initialize the Prisma Client
  * - Relationships (e.g., `userId`, `propertyId`) are included to link the booking to the appropriate user and property.
  * - The function returns the newly created booking.
  */
-const createBooking = async (userId, propertyId, checkinDate, checkoutDate, numberOfGuests, totalPrice, bookingStatus) => {
+const createBooking = async (bookingData) => {
   try {
+    const { userId, propertyId, checkinDate, checkoutDate, numberOfGuests, totalPrice, bookingStatus } = bookingData;
     // Create a new booking in the database
     const newBooking = await prisma.booking.create({
       data: {
-        id: uuidv4(), // ✅ Generate a unique ID for the booking
         userId,       // Associate the booking with a specific user
         propertyId,   // Associate the booking with a specific property
         checkinDate: new Date(checkinDate), // Ensure the check-in date is stored as a Date object
@@ -33,7 +32,7 @@ const createBooking = async (userId, propertyId, checkinDate, checkoutDate, numb
     return newBooking; // Return the created booking
   } catch (error) {
     // Log any errors encountered during the creation process
-    console.error('Error creating booking:', error.message);
+    console.error('❌Error creating booking:', error.message);
 
     // Throw a generic error to indicate failure in booking creation
     throw new Error('Failed to create booking.');

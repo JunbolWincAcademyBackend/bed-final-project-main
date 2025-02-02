@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client'; // Import Prisma Client
-import { v4 as uuidv4 } from 'uuid'; // Import UUID for unique ID generation
 
 const prisma = new PrismaClient(); // Initialize Prisma Client
 
@@ -9,10 +8,14 @@ const createReview = async (reviewData) => {
     // Destructure the reviewData object for clarity
     const { userId, propertyId, rating, comment } = reviewData;
 
+    // 👮🏻‍♂️ Validate rating (1-5)
+    if (typeof rating !== 'number' || rating < 1 || rating > 5) {
+      throw new Error('Rating must be a number between 1 and 5.');
+    }
+
     // Create a new review
     const newReview = await prisma.review.create({
       data: {
-        id: uuidv4(),  // ✅ Generate a unique ID for the review
         userId,        // Associate the review with the user
         propertyId,    // Associate the review with the property
         rating,        // Store the rating
@@ -20,12 +23,13 @@ const createReview = async (reviewData) => {
       },
     });
 
-    console.log('New review created:', newReview); // Debug log
+    console.log('✅ New review created:', newReview); // Debug log
     return newReview; // Return the newly created review
   } catch (error) {
-    console.error('Error creating review:', error.message); // Log any errors
+    console.error('❌ Error creating review:', error.message); // Log any errors
     throw new Error('Failed to create the review.'); // Throw a generic error for upstream handling
   }
 };
 
-export default createReview; 
+export default createReview;
+
