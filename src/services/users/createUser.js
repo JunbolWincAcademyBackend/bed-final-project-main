@@ -21,7 +21,21 @@ const createUser = async (username, name, password, email, phoneNumber, profileP
 
     // ✅ Ensure required fields are present
     if (!username || !password || !email || !name || !phoneNumber) {
-      throw new Error('Missing required fields: username, password, email, name, or phoneNumber.');
+      // 🛠 Construct an error message dynamically
+      const missingFields = [];
+      if (!username) missingFields.push('username');
+      if (!password) missingFields.push('password');
+      if (!email) missingFields.push('email');
+      if (!name) missingFields.push('name');
+      if (!phoneNumber) missingFields.push('phoneNumber');
+
+      const errorMessage = `Missing required fields: ${missingFields.join(', ')}`;
+      console.warn(`⚠️ Validation Failed: ${errorMessage}`);
+
+      // ✅ Throw a proper validation error with `statusCode = 400`
+      const validationError = new Error(errorMessage);
+      validationError.statusCode = 400; // 🔥 Fix: Ensures the error is handled correctly in errorHandler.js
+      throw validationError;
     }
 
     // ✅ Log before validating with Joi
@@ -39,7 +53,9 @@ const createUser = async (username, name, password, email, phoneNumber, profileP
 
     if (error) {
       console.error('❌ Validation failed:', error.details[0].message);
-      throw new Error(`Validation error: ${error.details[0].message}`);
+      const joiError = new Error(`Validation error: ${error.details[0].message}`);
+      joiError.statusCode = 400; // 🔥 Fix: Ensure Joi validation errors return 400
+      throw joiError;
     }
 
     // 🚀 Log the cleaned and validated data
@@ -53,7 +69,9 @@ const createUser = async (username, name, password, email, phoneNumber, profileP
     });
 
     if (existingUser) {
-      throw new Error('A user with this email, username, or phone number already exists.');
+      const duplicateError = new Error('A user with this email, username, or phone number already exists.');
+      duplicateError.statusCode = 400; // 🔥 Fix: Ensures duplicate user errors return 400 instead of 500
+      throw duplicateError;
     }
 
     // 🚀 Proceed to create new user in the database
@@ -73,7 +91,8 @@ const createUser = async (username, name, password, email, phoneNumber, profileP
     return newUser;
   } catch (error) {
     console.error('❌ Error creating user:', error.message);
-    throw new Error(`Failed to create new user: ${error.message}`);
+    if (!error.statusCode) error.statusCode = 500; // 🔥 Fix: Ensures unexpected errors return 500
+    throw error;
   }
 };
 

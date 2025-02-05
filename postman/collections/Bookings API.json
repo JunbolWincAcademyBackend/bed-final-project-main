@@ -553,7 +553,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"username\": \"Alex\",\n  \"password\": \"password123\",\n  \"name\": \"John Doe\",\n  \"email\": \"johndoe@example.com\",\n  \"phoneNumber\": \"123-456-7890\",\n  \"profilePicture\": \"https://global-uploads.webflow.com/5eecfecbe625d195e35b89f2/624bfb093da7d92733c001c0_Ignacio%20Villafruela%20Rodr%C3%ADguez.jpg\"\n}",
+              "raw": "{\n  \"username\": \"Alex\",\n  \"password\": \"newpassword456\",\n  \"name\": \"Alex Doe\",\n  \"email\": \"alexdoe@example.com\",\n  \"phoneNumber\": \"987-654-3210\",\n  \"profilePicture\": \"https://global-uploads.webflow.com/5eecfecbe625d195e35b89f2/624bfb093da7d92733c001c0_Ignacio%20Villafruela%20Rodr%C3%ADguez.jpg\"\n}",
               "options": {
                 "raw": {
                   "language": "json"

@@ -19,9 +19,41 @@ const createProperty = async (propertyData) => {
       rating,
     } = propertyData;
 
+    // ✅ Validate required fields
+    if (
+      !title ||
+      !description ||
+      !location ||
+      !pricePerNight ||
+      !bedroomCount ||
+      !bathRoomCount ||
+      !maxGuestCount ||
+      !hostId
+    ) {
+      const missingFields = [];
+      if (!title) missingFields.push('title');
+      if (!description) missingFields.push('description');
+      if (!location) missingFields.push('location');
+      if (!pricePerNight) missingFields.push('pricePerNight');
+      if (!bedroomCount) missingFields.push('bedroomCount');
+      if (!bathRoomCount) missingFields.push('bathRoomCount');
+      if (!maxGuestCount) missingFields.push('maxGuestCount');
+      if (!hostId) missingFields.push('hostId');
+
+      const errorMessage = `Missing required fields: ${missingFields.join(', ')}`;
+      console.warn(`⚠️ Validation Failed: ${errorMessage}`);
+
+      // ✅ Fix: Ensure validation errors return 400
+      const validationError = new Error(errorMessage);
+      validationError.statusCode = 400;
+      throw validationError;
+    }
+
     // ✅ Validate that `amenityIds` is an array before calling `.map()`
     if (!Array.isArray(amenityIds)) {
-      throw new Error('Invalid amenities format. It must be an array of IDs.');
+      const formatError = new Error('Invalid amenities format. It must be an array of IDs.');
+      formatError.statusCode = 400; // 🔥 Fix: Ensure 400 error for invalid input
+      throw formatError;
     }
 
     // Create a new property and associate it with the given amenities
@@ -45,8 +77,12 @@ const createProperty = async (propertyData) => {
     console.log('✅ New property created:', newProperty); // Debug log
     return newProperty; // Return the newly created property
   } catch (error) {
-    console.error('❌ Error creating property:', error.message); // Log any errors
-    throw new Error('Failed to create the property.'); // Throw a generic error for upstream handling
+    console.error('❌ Error creating property:', error.message);
+
+    // ✅ Fix: Assign `statusCode = 400` if it's a validation error
+    if (!error.statusCode) error.statusCode = 500;
+
+    throw error;
   }
 };
 

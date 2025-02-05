@@ -29,11 +29,21 @@ usersRouter.get('/:id', async (req, res, next) => {
     const { id } = req.params;
     const user = await getUserById(id); // Fetch user via service
 
-    if (!user) throw new NotFoundError('User', id);
+    if (!user) {
+      const error = new NotFoundError('User', id);
+      return res.status(error.statusCode).json({ message: error.message }); // ✅ This line was missing: Explicitly send 404 with the error message in NotFoundError.
+    }
+
     res.status(200).json(user);
   } catch (error) {
     console.error('❌ Error fetching user by ID:', error.message);
-    next(error);
+
+    // ✅ Check if it's a NotFoundError and set the correct status
+    if (error instanceof NotFoundError) {
+      return res.status(error.statusCode).json({ message: error.message });
+    }
+
+    next(error); // Pass error to global error handler
   }
 });
 

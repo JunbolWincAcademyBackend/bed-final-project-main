@@ -50,6 +50,9 @@ app.get('/debug-sentry', () => {
 //---------------------------
 app.use(Sentry.Handlers.errorHandler()); // ✅ Sentry's error handler
 
+
+app.use(errorHandler); // ✅ Attaching my custom error handler AFTER Sentry to avoid fails in Newman
+
 // Optional: Add a fallback error handler
 app.use((err, req, res, next) => {
   res.status(500).json({
