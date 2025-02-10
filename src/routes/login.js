@@ -2,7 +2,6 @@ import { Router } from 'express';
 import jwt from 'jsonwebtoken'; // ✅ Import JWT for token generation
 import dotenv from 'dotenv';
 
-
 dotenv.config(); // ✅ Load environment variables
 
 const router = Router();
@@ -12,7 +11,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'my-secret-key'; // Replace with a 
 
 // ✅ Mock user database (replace this with actual DB queries)
 const users = [
-  { id: 1, username: 'jdoe', password: 'password123', role: 'user' },
+  { id: 1, username: 'jdoe', password: 'password123', role: 'admin' }, //I have change the role here from "user" to "admin" just in case
   { id: 2, username: 'admin', password: 'adminpass', role: 'admin' },
 ];
 
