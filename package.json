@@ -15,7 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^6.3.0",
+    "@prisma/client": "^6.4.0",
     "@sentry/node": "^7.120.2",
     "@sentry/profiling-node": "^7.120.2",
     "@sentry/tracing": "^7.120.2",
@@ -32,7 +32,7 @@
     "concurrently": "^9.1.0",
     "newman": "^6.2.0",
     "nodemon": "^3.1.9",
-    "prisma": "^6.3.0"
+    "prisma": "^6.4.0"
   },
   "prisma": {
     "seed": "node ./prisma/seed.js"
