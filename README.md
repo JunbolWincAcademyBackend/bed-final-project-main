@@ -17,15 +17,6 @@ npm run dev
 
 To start the app, follow these steps:
 
-1. Create a `.env` file in the root directory.
-2. Replace the values for `AUTH_SECRET_KEY` and `SENTRY_DSN` with your own values.
-
-```plaintext
-AUTH_SECRET_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJqZG9lIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3MzgzNjE2MTEsImV4cCI6MTczODQ3NjgxMX0.Nmmw0eISaanBR_7WQu3-DHuRkF7CQdCPlFXn8WoNDdo
-
-SENTRY_DSN=https://10c8bd4ac08ada86223482b290532c49@o4507764486504448.ingest.de.sentry.io/4508712034828368
-```
-
 ## Running tests
 
 Tests are created using Newman (the file Booking API.postman_collection.json was use for positive cases the other one had issues), a command-line tool that is able to automate execution of Postman-created tests. Therefore, this command will simulate more or less the same tests that we executed during the course (e.g. test if the "happy case" returns 200 or 201 status code, or it returns 404 Not found when we are requesting a non-existing ID).
